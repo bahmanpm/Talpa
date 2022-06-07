@@ -1,0 +1,30 @@
+type Query {
+  machine: Machine
+  machines: [Machine!]
+  sensorData(id: ID!, from: String!, to: String!): [SensorDataPoint]
+} 
+
+type Machine {
+  name: String! 
+  sensors: [Sensor!]
+  lastKnownPosition: GPSPosition
+}
+
+type Sensor {
+  name: String!
+  machine: Machine!
+}
+
+type SensorDataPoint {
+  timestamp: DateTime!
+  value: Float! 
+}
+
+type GPSPosition {
+  latitude: String
+  longitude: String
+}
+
+type DateTime {
+  datetime: String
+}
