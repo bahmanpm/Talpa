@@ -1,7 +1,7 @@
 import casual from "casual";
 
 export const mocks = {
-  String: () => casual.word,
+  String: () => casual.name,
   Int: () => casual.integer(1, 10),
   GPSPosition: () => ({
     latitude: casual.latitude,

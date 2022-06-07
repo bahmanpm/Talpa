@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon --ext js,graphql server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Bahman Parsa Manesh",
   "license": "ISC",
@@ -16,7 +16,8 @@
     "apollo-server-express": "^3.8.2",
     "casual": "^1.6.2",
     "cors": "^2.8.5",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "jest": "^28.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
