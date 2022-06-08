@@ -1,3 +1,6 @@
+scalar DateTime
+scalar GPSPosition
+
 type Query {
   machine: Machine
   machines: [Machine!]
@@ -9,6 +12,7 @@ type Machine {
   name: String! 
   sensors: [Sensor!]
   lastKnownPosition: GPSPosition
+  timestamp: DateTime!
 }
 
 type Sensor {
@@ -19,13 +23,4 @@ type Sensor {
 type SensorDataPoint {
   timestamp: DateTime!
   value: Float! 
-}
-
-type GPSPosition {
-  latitude: String
-  longitude: String
-}
-
-type DateTime {
-  datetime: String
 }

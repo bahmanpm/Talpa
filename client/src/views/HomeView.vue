@@ -11,10 +11,8 @@
               sensors {
                 name
               }
-              lastKnownPosition {
-                latitude
-                longitude
-              }
+              lastKnownPosition
+              timestamp
             }
           }
         `
