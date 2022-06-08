@@ -4,39 +4,24 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </nav>
-    {{ machine }}
-    <div class="container">
-      <div class="row">
-        <div class="column">.column</div>
-        <div class="column">.column</div>
-        <div class="column">.column</div>
-        <div class="column">.column</div>
-      </div>
-
-      <div class="row">
-        <div class="column">.column</div>
-        <div class="column column-50 column-offset-25">
-          .column column-50 column-offset-25
-        </div>
-      </div>
-    </div>
     <router-view />
   </div>
 </template>
 
 <script>
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 
 export default {
-  apollo: {
-    machine: gql`
-      query {
-        machine {
-          name
-        }
-      }
-    `,
+  data() {
+    return {
+      machine: this.$apollo.queries.machine,
+    };
   },
+  methods: {
+    // getMachines() {
+    // },
+  },
+  mounted() {},
 };
 </script>
 

@@ -5,6 +5,7 @@ type Query {
 } 
 
 type Machine {
+  id: ID!
   name: String! 
   sensors: [Sensor!]
   lastKnownPosition: GPSPosition
