@@ -1,11 +1,12 @@
 <template>
   <div class="home">
     <!-- <img alt="Talpa logo" src="../assets/logo.png" /> -->
+    <h1>Details Page</h1>
     <ApolloQuery
       :query="
         (gql) => gql`
           query {
-            machines {
+            machine {
               id
               name
               sensors {
@@ -27,12 +28,7 @@
         </div>
 
         <!-- Result -->
-        <!-- <div v-else-if="data" class="result apollo">{{ data.machines }}</div> -->
-        <MachineTable
-          v-else-if="data"
-          :title="machineTableTitle"
-          :data="data.machines"
-        />
+        <div v-else-if="data" class="result apollo">{{ data.machine }}</div>
 
         <!-- No result -->
         <div v-else class="no-result apollo">No result :(</div>
@@ -43,17 +39,13 @@
 
 <script>
 // @ is an alias to /src
-import MachineTable from "@/components/MachineTable.vue";
+// import MachineTable from "@/components/MachineTable.vue";
 
 export default {
-  name: "HomeView",
+  name: "DetailsView",
   data() {
-    return {
-      machineTableTitle: "List of Machines",
-    };
+    return {};
   },
-  components: {
-    MachineTable,
-  },
+  components: {},
 };
 </script>

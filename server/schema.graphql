@@ -12,7 +12,6 @@ type Machine {
   name: String! 
   sensors: [Sensor!]
   lastKnownPosition: GPSPosition
-  timestamp: DateTime!
 }
 
 type Sensor {

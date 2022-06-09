@@ -16,7 +16,7 @@
         <tr v-for="item in data" :key="item.id">
           <td>{{ item.name }}</td>
           <td>
-            <DetailedButton :isOutlined="false" title="Details" />
+            <DetailedButton title="Details" :id="item.id" :isOutlined="false" />
           </td>
         </tr>
       </tbody>
