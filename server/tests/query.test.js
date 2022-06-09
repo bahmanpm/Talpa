@@ -1,6 +1,7 @@
 const { gql, ApolloServer } = require("apollo-server-express");
 const { readFile } = require("fs/promises");
 const casual = require("casual");
+
 // For clarity in this example we included our typeDefs and resolvers above our test,
 // but in a real world situation you'd be importing these in from different files
 // const typeDefs = gql`
@@ -8,6 +9,8 @@ const casual = require("casual");
 //     sensorData(id: ID!, from: String!, to: String!): String!
 //   }
 // `;
+
+jest.setTimeout(30000);
 
 const mocks = {
   String: () => casual.name,
