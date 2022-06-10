@@ -2,7 +2,7 @@
   <a
     class="button"
     v-bind:class="{ 'button-outline': isOutlined }"
-    @click="navigate(id)"
+    @click="navigate('/details', id)"
     >{{ title }}</a
   >
 </template>
@@ -18,9 +18,6 @@ export default {
     isOutlined: Boolean,
   },
   mixins: [navigationMixin],
-  mounted() {
-    // this.navigate("hi");
-  },
 };
 </script>
 

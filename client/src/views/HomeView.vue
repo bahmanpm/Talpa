@@ -1,22 +1,7 @@
 <template>
   <div class="home">
     <!-- <img alt="Talpa logo" src="../assets/logo.png" /> -->
-    <ApolloQuery
-      :query="
-        (gql) => gql`
-          query {
-            machines {
-              id
-              name
-              sensors {
-                name
-              }
-              lastKnownPosition
-            }
-          }
-        `
-      "
-    >
+    <ApolloQuery :query="require('../graphql/allMachines.gql')">
       <template v-slot="{ result: { error, data }, isLoading }">
         <!-- Loading -->
         <div v-if="isLoading" class="loading apollo">Loading...</div>

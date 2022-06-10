@@ -14,5 +14,10 @@ module.exports = defineConfig({
         };
         return options;
       });
+    config.module
+      .rule("graphql")
+      .test(/\.gql$/)
+      .use("graphql-tag/loader")
+      .loader("graphql-tag/loader");
   },
 });

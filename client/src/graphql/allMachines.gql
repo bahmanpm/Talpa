@@ -1,0 +1,10 @@
+query allMachines{
+    machines {
+        id
+        name
+        sensors {
+            name
+        }
+        lastKnownPosition
+    }
+}
