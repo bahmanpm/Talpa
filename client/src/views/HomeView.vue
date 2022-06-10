@@ -17,6 +17,9 @@
           v-else-if="data"
           :title="machineTableTitle"
           :data="data.machines"
+          :headItems="headItems"
+          :isDetailedButtonAvailable="isDetailedButtonAvailable"
+          :DetailedButtonPath="DetailedButtonPath"
         />
 
         <!-- No result -->
@@ -28,13 +31,16 @@
 
 <script>
 // @ is an alias to /src
-import MachineTable from "@/components/MachineTable.vue";
+import MachineTable from "@/components/TableComponent.vue";
 
 export default {
   name: "HomeView",
   data() {
     return {
       machineTableTitle: "List of Machines",
+      headItems: ["Machine", "More Info"],
+      isDetailedButtonAvailable: true,
+      DetailedButtonPath: "/details",
     };
   },
   components: {

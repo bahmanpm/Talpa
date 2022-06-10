@@ -15,6 +15,7 @@ type Machine {
 }
 
 type Sensor {
+  id: ID!
   name: String!
   machine: Machine!
 }

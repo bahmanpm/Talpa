@@ -8,15 +8,19 @@
       </caption>
       <thead>
         <tr>
-          <th>Machine Name</th>
-          <th>More Info</th>
+          <th v-for="(item, index) in headItems" :key="index">{{ item }}</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in data" :key="item.id">
           <td>{{ item.name }}</td>
-          <td>
-            <DetailedButton title="Details" :id="item.id" :isOutlined="false" />
+          <td v-if="isDetailedButtonAvailable">
+            <DetailedButton
+              title="Details"
+              :path="DetailedButtonPath"
+              :id="item.id"
+              :isOutlined="false"
+            />
           </td>
         </tr>
       </tbody>
@@ -27,10 +31,13 @@
 <script>
 import DetailedButton from "./DetailsButton.vue";
 export default {
-  name: "MachineTable",
+  name: "TableComponent",
   props: {
     title: String,
     data: Array,
+    headItems: Array,
+    isDetailedButtonAvailable: Boolean,
+    DetailedButtonPath: String,
   },
   components: {
     DetailedButton,

@@ -1,0 +1,6 @@
+query sensorData($id: ID!, $from: String!, $to: String!) {
+  sensorData(id: $id, from: $from, to: $to) {
+    timestamp
+    value
+  }
+}

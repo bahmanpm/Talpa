@@ -1,8 +1,9 @@
-query {
+query machine {
     machine {
         id
         name
         sensors {
+            id
             name
         }
         lastKnownPosition

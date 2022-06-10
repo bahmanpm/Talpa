@@ -13,10 +13,18 @@
         </div>
 
         <!-- Result -->
-        <div v-else-if="data" class="result apollo">{{ data.machine }}</div>
+        <SensorsTable
+          v-else-if="data.machine.sensors"
+          :title="sensorsTableTitle"
+          :data="data.machine.sensors"
+          :headItems="headItems"
+          :isDetailedButtonAvailable="isDetailedButtonAvailable"
+          :DetailedButtonPath="DetailedButtonPath"
+        />
 
         <!-- No result -->
         <div v-else class="no-result apollo">No result :(</div>
+        {{ data.machine.sensors }}
       </template>
     </ApolloQuery>
   </div>
@@ -24,13 +32,18 @@
 
 <script>
 // @ is an alias to /src
-// import MachineTable from "@/components/MachineTable.vue";
+import SensorsTable from "@/components/TableComponent.vue";
 
 export default {
   name: "DetailsView",
   data() {
-    return {};
+    return {
+      sensorsTableTitle: "List of Sensors",
+      headItems: ["Sensor", "Details"],
+      isDetailedButtonAvailable: true,
+      DetailedButtonPath: "/sensor-details",
+    };
   },
-  components: {},
+  components: { SensorsTable },
 };
 </script>

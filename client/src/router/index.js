@@ -15,6 +15,11 @@ const routes = [
     name: "details",
     component: () => import("../views/DetailsView.vue"),
   },
+  {
+    path: "/sensor-details",
+    name: "sensor-details",
+    component: () => import("../views/SensorDetailsView.vue"),
+  },
 ];
 
 const router = new VueRouter({

@@ -2,7 +2,7 @@
   <a
     class="button"
     v-bind:class="{ 'button-outline': isOutlined }"
-    @click="navigate('/details', id)"
+    @click="navigate(path, id)"
     >{{ title }}</a
   >
 </template>
@@ -14,6 +14,7 @@ export default {
   name: "DetailedButton",
   props: {
     title: String,
+    path: String,
     id: String,
     isOutlined: Boolean,
   },
