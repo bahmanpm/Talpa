@@ -1,6 +1,19 @@
 <template>
   <div class="home">
     <h1>Sensor Details Page</h1>
+    <form>
+      <div class="row">
+        <div class="column">
+          <label for="from">From:</label>
+          <input type="date" id="from" name="from" ref="from" />
+        </div>
+        <div class="column">
+          <label for="to">To:</label>
+          <input type="date" id="to" name="to" ref="to" />
+        </div>
+      </div>
+      <input type="submit" value="Submit" @click="onSubmit" />
+    </form>
     <div id="chartdiv"></div>
   </div>
 </template>
@@ -12,12 +25,18 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_kelly from "@amcharts/amcharts4/themes/kelly";
 
+// Apply chart themes
 am4core.useTheme(am4themes_animated);
+am4core.useTheme(am4themes_kelly);
 
 export default {
   name: "DetailsView",
   data() {
-    return {};
+    return {
+      sensorData: [],
+      sortedSensorData: [],
+      filteredSensorData: [],
+    };
   },
   methods: {
     async fetchEvents() {
@@ -29,14 +48,11 @@ export default {
           to: "1992-09-09 20:46:39",
         },
       });
-      this.data = data;
-      this.loadChart(this.data.sensorData);
+      this.sensorData = data.sensorData;
+      this.sortedSensorData = this.sortDates(this.sensorData);
+      this.loadChart(this.sortedSensorData);
     },
     loadChart(data) {
-      // Apply chart themes
-      am4core.useTheme(am4themes_animated);
-      am4core.useTheme(am4themes_kelly);
-
       // Create chart instance
       let chart = am4core.create("chartdiv", am4charts.XYChart);
 
@@ -71,6 +87,27 @@ export default {
 
       // Add legend
       chart.legend = new am4charts.Legend();
+    },
+    sortDates(dates) {
+      return dates.sort(function (a, b) {
+        let c = new Date(a.timestamp);
+        let d = new Date(b.timestamp);
+        return c - d;
+      });
+    },
+    filterDates(dates, from, to) {
+      return dates.filter(function (date) {
+        return date.timestamp >= from && date.timestamp <= to;
+      });
+    },
+    onSubmit(event) {
+      event.preventDefault();
+      this.filteredSensorData = this.filterDates(
+        this.sortedSensorData,
+        this.$refs.from.value,
+        this.$refs.to.value
+      );
+      this.loadChart(this.filteredSensorData);
     },
   },
   mounted() {
