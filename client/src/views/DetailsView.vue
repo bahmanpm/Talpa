@@ -24,7 +24,6 @@
 
         <!-- No result -->
         <div v-else class="no-result apollo">No result :(</div>
-        {{ data.machine.sensors }}
       </template>
     </ApolloQuery>
   </div>

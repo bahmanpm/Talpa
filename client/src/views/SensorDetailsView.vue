@@ -1,99 +1,92 @@
 <template>
   <div class="home">
-    <!-- <img alt="Talpa logo" src="../assets/logo.png" /> -->
     <h1>Sensor Details Page</h1>
-    <div class="hello" ref="chartdiv"></div>
-    <ApolloQuery
-      :query="require('../graphql/sensorDetails.gql')"
-      :variables="{
-        id: 'sjkfhsjkfhjshgjlwheglkhe',
-        from: '1994-04-11 12:32:04',
-        to: '1992-09-09 20:46:39',
-      }"
-    >
-      <template v-slot="{ result: { error, data }, isLoading }">
-        <!-- Loading -->
-        <div v-if="isLoading" class="loading apollo">Loading...</div>
-
-        <!-- Error -->
-        <div v-else-if="error" class="error apollo">
-          An error occurred : {{ error }}
-        </div>
-
-        <!-- Result -->
-        <div v-else-if="data" class="data apollo">
-          {{ data }}
-        </div>
-
-        <!-- No result -->
-        <div v-else class="no-result apollo">No result :(</div>
-      </template>
-    </ApolloQuery>
+    <div id="chartdiv"></div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import SensorsTable from "@/components/TableComponent.vue";
+import sensorDetailsGQL from "../graphql/sensorDetails.gql";
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4themes_kelly from "@amcharts/amcharts4/themes/kelly";
 
 am4core.useTheme(am4themes_animated);
 
 export default {
   name: "DetailsView",
   data() {
-    return {
-      //   sensorsTableTitle: "List of Sensors",
-      //   headItems: ["Sensor", "Details"],
-      //   isDetailedButtonAvailable: true,
-    };
+    return {};
+  },
+  methods: {
+    async fetchEvents() {
+      const { data } = await this.$apollo.query({
+        query: sensorDetailsGQL,
+        variables: {
+          id: "sjkfhsjkfhjshgjlwheglkhe",
+          from: "1994-04-11 12:32:04",
+          to: "1992-09-09 20:46:39",
+        },
+      });
+      this.data = data;
+      this.loadChart(this.data.sensorData);
+    },
+    loadChart(data) {
+      // Apply chart themes
+      am4core.useTheme(am4themes_animated);
+      am4core.useTheme(am4themes_kelly);
+
+      // Create chart instance
+      let chart = am4core.create("chartdiv", am4charts.XYChart);
+
+      // Add data
+      chart.data = data;
+
+      // Create axes
+      let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      categoryAxis.dataFields.category = "timestamp";
+      categoryAxis.title.text = "Sensor Values History";
+      categoryAxis.renderer.grid.template.location = 0;
+      categoryAxis.renderer.minGridDistance = 20;
+
+      let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      valueAxis.title.text = "Expenditure (M)";
+
+      // Create series
+      let series = chart.series.push(new am4charts.ColumnSeries());
+      series.dataFields.valueY = "value";
+      series.dataFields.categoryX = "timestamp";
+      series.name = "Value";
+      series.tooltipText = "{name}: [bold]{valueY}[/]";
+      // This has no effect
+      // series.stacked = true;
+
+      let label = categoryAxis.renderer.labels.template;
+      label.truncate = true;
+      label.maxWidth = 80;
+
+      // Add cursor
+      chart.cursor = new am4charts.XYCursor();
+
+      // Add legend
+      chart.legend = new am4charts.Legend();
+    },
   },
   mounted() {
-    let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
-
-    chart.paddingRight = 20;
-
-    let data = [];
-    let visits = 10;
-    for (let i = 1; i < 366; i++) {
-      visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-      data.push({
-        date: new Date(2018, 0, i),
-        name: "name" + i,
-        value: visits,
-      });
-    }
-
-    chart.data = data;
-
-    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.renderer.grid.template.location = 0;
-
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.tooltip.disabled = true;
-    valueAxis.renderer.minWidth = 35;
-
-    let series = chart.series.push(new am4charts.LineSeries());
-    series.dataFields.dateX = "date";
-    series.dataFields.valueY = "value";
-
-    series.tooltipText = "{valueY.value}";
-    chart.cursor = new am4charts.XYCursor();
-
-    let scrollbarX = new am4charts.XYChartScrollbar();
-    scrollbarX.series.push(series);
-    chart.scrollbarX = scrollbarX;
-
-    this.chart = chart;
+    this.fetchEvents();
   },
-
   beforeDestroy() {
     if (this.chart) {
       this.chart.dispose();
     }
   },
-  //   components: { SensorsTable },
 };
 </script>
+
+<style scoped>
+#chartdiv {
+  width: 100%;
+  height: 100vh;
+}
+</style>
