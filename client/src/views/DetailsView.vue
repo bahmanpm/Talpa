@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <!-- <img alt="Talpa logo" src="../assets/logo.png" /> -->
     <h1>Details Page</h1>
     <ApolloQuery :query="require('../graphql/machineDetails.gql')">
       <template v-slot="{ result: { error, data }, isLoading }">

@@ -15,6 +15,11 @@
       <input type="submit" value="Submit" @click="onSubmit" />
     </form>
     <div id="chartdiv"></div>
+    <ModalComponent
+      :show="isModalOpen"
+      :message="modalMessage"
+      @close="isModalOpen = false"
+    />
   </div>
 </template>
 
@@ -24,6 +29,7 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_kelly from "@amcharts/amcharts4/themes/kelly";
+import ModalComponent from "../components/ModalComponent";
 
 // Apply chart themes
 am4core.useTheme(am4themes_animated);
@@ -39,25 +45,35 @@ export default {
       defaultId: "5f7dd680-369e-4578-a231-683bd48275b4",
       defaultDateFrom: "1990-01-01 12:32:04",
       defaultDateTo: "2010-01-01 20:46:39",
+      isModalOpen: false,
+      modalMessage: "",
     };
   },
+  components: { ModalComponent },
   methods: {
     async fetchEvents(
       id = this.defaultId,
       from = this.defaultDateFrom,
       to = this.defaultDateTo
     ) {
-      const { data } = await this.$apollo.query({
-        query: sensorDetailsGQL,
-        variables: {
-          id: id,
-          from: from,
-          to: to,
-        },
-      });
-      this.sensorData = data.sensorData;
-      this.sortedSensorData = this.sortDates(this.sensorData);
-      this.loadChart(this.sortedSensorData);
+      try {
+        const { data } = await this.$apollo.query({
+          query: sensorDetailsGQL,
+          variables: {
+            id: id,
+            from: from,
+            to: to,
+          },
+        });
+
+        this.sensorData = data.sensorData;
+        this.sortedSensorData = this.sortDates(this.sensorData);
+        this.loadChart(this.sortedSensorData);
+      } catch (error) {
+        console.log(error);
+        this.modalMessage = error;
+        this.isModalOpen = true;
+      }
     },
     loadChart(data) {
       // Create chart instance
@@ -134,5 +150,9 @@ export default {
 #chartdiv {
   width: 100%;
   height: 100vh;
+}
+
+form {
+  margin: 0 1.5rem;
 }
 </style>
