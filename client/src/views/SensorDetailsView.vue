@@ -36,16 +36,23 @@ export default {
       sensorData: [],
       sortedSensorData: [],
       filteredSensorData: [],
+      defaultId: "5f7dd680-369e-4578-a231-683bd48275b4",
+      defaultDateFrom: "1990-01-01 12:32:04",
+      defaultDateTo: "2010-01-01 20:46:39",
     };
   },
   methods: {
-    async fetchEvents() {
+    async fetchEvents(
+      id = this.defaultId,
+      from = this.defaultDateFrom,
+      to = this.defaultDateTo
+    ) {
       const { data } = await this.$apollo.query({
         query: sensorDetailsGQL,
         variables: {
-          id: "sjkfhsjkfhjshgjlwheglkhe",
-          from: "1994-04-11 12:32:04",
-          to: "1992-09-09 20:46:39",
+          id: id,
+          from: from,
+          to: to,
         },
       });
       this.sensorData = data.sensorData;
@@ -108,6 +115,8 @@ export default {
         this.$refs.to.value
       );
       this.loadChart(this.filteredSensorData);
+      // Or in case if you want to receive filtered data from backend.
+      // this.fetchEvents(this.defaultId, this.$refs.from.value, this.$refs.to.value);
     },
   },
   mounted() {
